@@ -60,7 +60,7 @@ src/main/java/com/starterkit/
 ### Option 1 — Run locally (H2 in-memory, zero setup)
 
 ```bash
-git clone https://github.com/yourusername/springboot-starter-kit.git
+git clone https://github.com/raahulllkushwaha/springboot-starter-kit.git
 cd springboot-starter-kit
 
 mvn spring-boot:run
