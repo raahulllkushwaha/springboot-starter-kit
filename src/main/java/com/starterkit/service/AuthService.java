@@ -50,18 +50,19 @@ public class AuthService {
         }
 
         Role userRole = roleRepository.findByName("ROLE_USER")
-            .orElseThrow(() -> new ResourceNotFoundException("Role", "name", "ROLE_USER"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role", "name", "ROLE_USER"));
 
         User user = User.builder()
-            .name(request.getName())
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .roles(Set.of(userRole))
-            .build();
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(Set.of(userRole))
+                .build();
 
         user = userRepository.save(user);
         log.info("New user registered: {}", user.getEmail());
 
+        // Roles auto-embedded in JWT claims — no extra DB call needed on auth
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = createRefreshToken(user);
 
@@ -71,11 +72,11 @@ public class AuthService {
     @Transactional
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         User user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
 
         // Revoke old refresh tokens
         refreshTokenRepository.revokeAllByUser(user);
@@ -90,7 +91,7 @@ public class AuthService {
     @Transactional
     public AuthResponse refresh(RefreshTokenRequest request) {
         RefreshToken token = refreshTokenRepository.findByToken(request.getRefreshToken())
-            .orElseThrow(() -> new BadRequestException("Invalid refresh token"));
+                .orElseThrow(() -> new BadRequestException("Invalid refresh token"));
 
         if (token.isRevoked() || token.isExpired()) {
             throw new BadRequestException("Refresh token is expired or revoked. Please login again.");
@@ -119,18 +120,18 @@ public class AuthService {
     private String createRefreshToken(User user) {
         String tokenValue = UUID.randomUUID().toString();
         RefreshToken refreshToken = RefreshToken.builder()
-            .token(tokenValue)
-            .user(user)
-            .expiresAt(LocalDateTime.now().plusSeconds(refreshTokenExpiry / 1000))
-            .build();
+                .token(tokenValue)
+                .user(user)
+                .expiresAt(LocalDateTime.now().plusSeconds(refreshTokenExpiry / 1000))
+                .build();
         refreshTokenRepository.save(refreshToken);
         return tokenValue;
     }
 
     private AuthResponse buildAuthResponse(User user, String accessToken, String refreshToken) {
         Set<String> roles = user.getRoles().stream()
-            .map(Role::getName)
-            .collect(Collectors.toSet());
+                .map(Role::getName)
+                .collect(Collectors.toSet());
         return AuthResponse.of(accessToken, refreshToken, user.getId(), user.getName(), user.getEmail(), roles);
     }
 }
