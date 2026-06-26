@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:starterkit}?useSSL=false&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+
+  # Spring Session JDBC — persists sessions to DB
+  # Survives server restarts unlike in-memory sessions
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+    timeout: 3600   # 1 hour session timeout
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    com.starterkit: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.session: DEBUG

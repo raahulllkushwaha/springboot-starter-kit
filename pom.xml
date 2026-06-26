@@ -109,6 +109,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Spring Session JDBC (used in feature/spring-session branch) -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
+
         <!-- Dev Tools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
