@@ -60,7 +60,7 @@ src/main/java/com/starterkit/
 ### Option 1 — Run locally (H2 in-memory, zero setup)
 
 ```bash
-git clone https://github.com/raahulllkushwaha/springboot-starter-kit.git
+git clone https://github.com/yourusername/springboot-starter-kit.git
 cd springboot-starter-kit
 
 mvn spring-boot:run
@@ -235,6 +235,40 @@ mvn test
 mvn package -DskipTests
 ```
 
+---
+
+## 🔀 Two Auth Approaches
+
+This starter supports two authentication strategies.
+
+### Approach 1: JWT (default — `main` branch)
+
+```
+POST /login → accessToken + refreshToken returned
+Client: Authorization: Bearer <token> OR HTTP-only cookie
+Server: validates JWT signature — zero DB calls
+```
+✅ Stateless, mobile-friendly, microservices-ready
+⚠️ Token revocation requires refresh token invalidation
+
+### Approach 2: Spring Session + JDBC (`feature/spring-session` branch)
+
+```
+POST /login → SESSION cookie set automatically
+Client: cookie on every request (browser handles it)
+Server: reads SecurityContext from JDBC session store
+```
+✅ No custom JWT filter — uses Spring Security built-in flow
+✅ Instant revocation (delete session from DB)
+✅ Survives server restarts (JDBC-backed)
+⚠️ Not ideal for mobile/API clients
+
+### Switch to Spring Session
+```bash
+git checkout feature/spring-session
+# Set in .env: SPRING_PROFILES_ACTIVE=session
+mvn spring-boot:run
+```
 ---
 
 ## 📦 Tech Stack
