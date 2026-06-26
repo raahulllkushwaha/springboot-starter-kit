@@ -27,3 +27,10 @@ logging:
   level:
     com.starterkit: DEBUG
     org.springframework.security: DEBUG
+
+app:
+  jwt:
+    secret: dGVzdC1zZWNyZXQta2V5LWZvci1kZXYtb25seS1ub3QtZm9yLXByb2R1Y3Rpb24=
+  admin:
+    email: admin@example.com
+    password: Admin@1234
