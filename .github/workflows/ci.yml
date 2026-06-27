@@ -42,7 +42,14 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: mvn clean test -Dspring.profiles.active=dev
+        run: mvn clean test -Dspring.profiles.active=prod
+        env:
+            DB_HOST: localhost
+            DB_PORT: 3306
+            DB_NAME: starterkit_test
+            DB_USERNAME: test
+            DB_PASSWORD: test
+            JWT_SECRET: dGVzdC1zZWNyZXQta2V5LWZvci1kZXYtb25seQ==
 
       - name: Upload test results
         if: always()
