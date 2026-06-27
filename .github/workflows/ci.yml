@@ -42,7 +42,7 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: mvn clean test -Dspring.profiles.active=prod
+        run: mvn clean test
         env:
             DB_HOST: localhost
             DB_PORT: 3306
