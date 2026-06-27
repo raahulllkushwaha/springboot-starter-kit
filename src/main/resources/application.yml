@@ -21,8 +21,7 @@ spring:
 
   jackson:
     default-property-inclusion: non_null
-    serialization:
-      write-dates-as-timestamps: false
+
 
 # JWT
 app:
